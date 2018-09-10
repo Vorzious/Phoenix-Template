@@ -1,0 +1,57 @@
+<div class="row">
+  <div class="col-12">
+    <div class="gridbox">
+      <div class="gridbox-title">
+        <h3>Listing <%= schema.human_plural %></h3>
+        <div class="gridbox-tools">
+          <%%= link "Create" <> " <%= schema.human_singular %>", class: "btn btn-primary btn-xs", to: <%= schema.route_helper %>_path(@conn, :new) %>
+        </div>
+      </div>
+      <div class="gridbox-content">
+        <table class="table table-striped table-bordered table-hover datatable">
+          <thead>
+            <tr>
+              <%= for {k, _} <- schema.attrs do %>
+                <th>
+                  <%= Phoenix.Naming.humanize(Atom.to_string(k)) %>
+                </th>
+              <% end %>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            <%%= for <%= schema.singular %> <- @<%= schema.plural %> do %>
+                <tr>
+                <%= for {k, _} <- schema.attrs do %>
+                  <td class="control-label">
+                    <%%= <%= schema.singular %>.<%= k %> %>
+                  </td>
+                <% end %>
+                  <td class="text-right">
+                    <span><%%= link "Show", to: <%= schema.route_helper %>_path(@conn, :show, <%= schema.singular %>), class: "btn btn-default btn-xs" %></span>
+                    <span><%%= link "Edit", to: <%= schema.route_helper %>_path(@conn, :edit, <%= schema.singular %>), class: "btn btn-default btn-xs" %></span>
+                    <span><%%= link "Delete", to: <%= schema.route_helper %>_path(@conn, :delete, <%= schema.singular %>), method: :delete, data: [confirm: "Are you sure?"], class: "btn btn-danger btn-xs" %></span>
+                  </td>
+              </tr>
+            <%% end %>
+          </tbody>
+          <tfoot>
+            <tr>
+              <%= for {k, _} <- schema.attrs do %>
+                <th>
+                  <%= Phoenix.Naming.humanize(Atom.to_string(k)) %>
+                </th>
+              <% end %>
+              <th></th>
+            </tr>
+          </tfoot>
+        </table>
+      </div>
+      <div class="gridbox-footer">
+          <div class="gridbox-tools">
+            <%%= link "Create" <> " <%= schema.human_singular %>", class: "btn btn-primary btn-xs", to: <%= schema.route_helper %>_path(@conn, :new) %>
+          </div>
+      </div>
+    </div>
+  </div>
+</div>

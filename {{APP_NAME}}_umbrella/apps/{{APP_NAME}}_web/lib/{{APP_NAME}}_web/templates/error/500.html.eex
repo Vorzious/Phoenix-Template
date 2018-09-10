@@ -1,0 +1,7 @@
+<div class="jumbotron">
+  <h1>500</h1>
+  <p class="lead">Internal Server Error</p>
+    <%= link to: page_path(@conn, :index) do %>
+        <button class="btn btn-primary">Home</button>
+    <% end %>  
+</div>

@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Hello {{MODULE_NAME}}!</title>
+    <link rel="stylesheet" href="<%= static_path(@conn, "/css/vendor.css") %>">
+    <link rel="stylesheet" href="<%= static_path(@conn, "/css/app.css") %>">
+
+    <!-- Google Analytics -->
+    <script>
+      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+      })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+      ga('create', '[REPLACE_ME]', 'auto');  // Replace with your property ID.
+      ga('send', 'pageview');
+    </script>
+    <!-- End Google Analytics -->
+
+    <!-- SEO -->
+    <meta name="description" content="[REPLACE_ME]">
+
+    <meta property="fb:app_id" content="[REPLACE_ME]"/>
+
+    <meta property="og:title" content="[REPLACE_ME]" />
+    <meta property="og:description" content="[REPLACE_ME]" />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="[REPLACE_ME]" />
+    <meta property="og:image" content="[REPLACE_ME]" />
+    <meta property="og:site_name" content="[REPLACE_ME]">
+
+    <meta name="twitter:title" content="[REPLACE_ME]">
+    <meta name="twitter:description" content="[REPLACE_ME]">
+    <meta name="twitter:image" content="[REPLACE_ME]">
+    <!-- Used with summary, summary_large_image, app, player cards -->
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:url" content="[REPLACE_ME]" />
+
+    <!-- Misc. -->
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+    <link rel="canonical" href="[REPLACE_ME]" />
+
+  </head>
+
+  <body>
+    <div class="container">
+      <header class="header">
+        <nav role="navigation">
+          <ul class="nav nav-pills pull-right">
+            <li><a href="http://www.phoenixframework.org/docs">Get Started</a></li>
+          </ul>
+        </nav>
+        <span class="logo"></span>
+      </header>
+
+      <p class="alert alert-info" role="alert"><%= get_flash(@conn, :info) %></p>
+      <p class="alert alert-danger" role="alert"><%= get_flash(@conn, :error) %></p>
+
+      <main role="main">
+        <%= render @view_module, @view_template, assigns %>
+      </main>
+
+    </div> <!-- /container -->
+    <script src="<%= static_path(@conn, "/js/app.js") %>"></script>
+  </body>
+</html>

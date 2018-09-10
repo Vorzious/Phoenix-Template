@@ -1,0 +1,852 @@
+/// Helper mixin to create grids with css-grids.
+///
+/// @group Layout
+/// @author Robin Heij
+///
+/// @param {Grid} $rows - Grid-rows statement
+/// @param {Grid} $columns - Grid-columns statement
+/// @param {Pixels} $row-gap - How many pixels should be between the elements?
+/// @param {Grid} $ms-rows [$rows] - Grid-rows statement for IE11
+/// @param {Grid} $ms-columns [$columns] - Grid-columns statement for IE11
+/// @param {Pixels} $column-gap [$row-gap] - How many pixels should be between the elements?
+/// @output `grid`
+///
+/// @example scss - Give `.foo` a 2 column grid
+///   .foo {
+///     @include grid(
+///       '1fr 1fr', 
+///       '1fr', 
+///       20px
+///     );
+///   }
+
+@mixin grid($rows, $columns, $row-gap, $ms-rows: $rows, $ms-columns: $columns, $column-gap: $row-gap) {
+    @supports (display: -ms-grid) {
+      display: -ms-grid;
+  
+      -ms-grid-rows: #{$rows};
+      -ms-grid-columns: #{$columns};
+  
+      -ms-grid-row-gap: $row-gap;
+      -ms-grid-column-gap: $column-gap;
+    }
+  
+    @supports (display: grid) {
+      display: grid;
+  
+      grid-template-rows: #{$rows};
+      grid-template-columns: #{$columns};
+        
+      grid-gap: $row-gap $column-gap;
+    }
+  }
+  
+  /// Helper mixin to create grids with css-grids.
+  ///
+  /// @group Layout
+  /// @author Robin Heij
+  ///
+  /// @param {Grid} $row - Start row index (starting at 1) or the name of the start row
+  /// @param {Grid} $row-span - End row index or the name of the end row
+  /// @param {Grid} $column - Start column index (starting at 1)or the name of the start column
+  /// @param {Grid} $column-span - End column index or the name of the end column
+  /// @param {Grid} $ms-row [$row] - Start row index (starting at 1) or the name of the start row for IE11
+  /// @param {Grid} $ms-row-span [$row-span] - End row index or the name of the end row for IE11
+  /// @param {Grid} $ms-column [$column] - Start column index (starting at 1) or the name of the start column for IE11
+  /// @param {Grid} $ms-column-span [$column-span] - End column index or the name of the end column for IE11
+  /// @output `grid-placement`
+  ///
+  /// @example scss - Place `.foo` on the first column and the first row, and let it span for 2 row and 3 columns
+  ///   .foo {
+  ///     @include grid-placement(1, span 2, 1, span 3, 1, 2, 1, 3);
+  ///   }
+  
+  @mixin grid-placement($row, $row-span, $column, $column-span, $ms-row: $row, $ms-row-span: $row-span, $ms-column: $column, $ms-column-span: $column-span ) {
+    @supports (-ms-grid-column: 2) {
+      -ms-grid-column: $ms-column;
+      -ms-grid-row: $ms-row;
+      -ms-grid-column-span: $ms-column-span;
+      -ms-grid-row-span: $ms-row-span;    
+    }
+  
+    @supports (grid-column: span 1) {
+      grid-row: $row / $row-span;
+      grid-column: $column / $column-span;
+    }
+  }
+  
+  /// Helper mixin to create linear gradient backgrounds.
+  ///
+  /// @group Gradient
+  /// @author Robin Heij
+  ///
+  /// @param {Boolean | Degrees of angle} $direction [180deg] - Whether or not vertical, if not use this angle
+  /// @param {List of colors} $color-stops - A list of colors where the gradient is built on
+  /// @output `background`
+  ///
+  /// @example scss - Give `.foo` a linear gradient
+  ///   .foo {
+  ///     @include linearGradient(rgba(0,0,0,0), rgba(0,0,0,0.6));
+  ///   }
+  ///
+  /// @example scss - Give `.foo` a linear gradient that isn't vertical
+  ///   .foo {
+  ///     @include linearGradient(30deg, rgba(0,0,0,0), rgba(0,0,0,0.6));
+  ///   }
+  
+  @mixin linearGradient($direction, $color-stops...) {
+  
+    @if is-direction($direction) == false {
+      $color-stops: $direction, $color-stops;
+      $direction: 180deg;
+    }
+  
+    background: nth(nth($color-stops, 1), 1);
+    background: -webkit-linear-gradient(legacy-direction($direction), $color-stops);
+    background: linear-gradient($direction, $color-stops);
+  }
+  
+  
+  /// Function to calculate REM units.
+  ///
+  /// @author Robin Heij
+  ///
+  /// @param {Integer} $size - Use the value you would have wanted in pixels, but without 'px'
+  /// @return {rem-unit} `rem-unit`
+  
+  @function calculateRem($size) {
+    $remSize: $size / 10;
+    @return $remSize * 1rem;
+  }
+  
+  
+  /// Helper mixin to create rem unit for font-size and have a fallback to pixels.
+  ///
+  /// @group Text
+  /// @author Robin Heij
+  ///
+  /// @param {Integer} $size - Use the value you would have wanted in pixels, but without 'px'
+  /// @output `font-size`
+  ///
+  /// @example scss - Give `.foo` a font-size of 1.4rem, and 14 pixels as a fallback
+  ///   .foo {
+  ///     @include font-size(14);
+  ///   }
+  
+  @mixin font-size($size) {
+    font-size: $size+px;
+    font-size: calculateRem($size);
+  }
+  
+  /// Helper mixin to create rem unit for font-size and line-height and have a fallback to pixels.
+  ///
+  /// @group Text
+  /// @author Robin Heij
+  ///
+  /// @param {Integer} $size - Use the value you would have wanted in pixels, but without 'px'
+  /// @param {Integer} $height - Use the value you would have wanted in pixels, but without 'px'
+  /// @output `font-size` and `line-height` 
+  ///
+  /// @example scss - Give `.foo` a font-size of 1.4rem, and 14 pixels as a fallback, and a line-height of 1.8rem, and 18pixels as a fallback
+  ///   .foo {
+  ///     @include font-size-and-line-height(14,18);
+  ///   }
+  
+  
+  @mixin font-size-and-line-height($size, $height) {
+    font-size: $size+px;
+    font-size: calculateRem($size);
+  
+    line-height: $height+px;
+    line-height: calculateRem($height);
+  }
+  
+  
+  /// Helper mixin to to add media queries to your SASS.
+  ///
+  /// @group Responsiveness
+  /// @author Robin Heij
+  ///
+  /// @param {String} $class - Similar to the bootstrap abbreviations, use 'xs', 'sm', 'md' and 'lg'
+  /// @output `media query` 
+  ///
+  /// @example scss - Give `.foo` a red background on small screens ( < 767px ), but green on the rest.
+  ///   .foo {
+  ///     background-color: green;
+  ///     @include breakpoint(xs){
+  ///       background-color: red;
+  ///     }
+  ///   }
+  
+  @mixin breakpoint($class) {
+    @if $class == xs {
+      @media (max-width: 767px) { @content; }
+    }
+   
+    @else if $class == sm {
+      @media (min-width: 767px) { @content; }
+    }
+   
+    @else if $class == md {
+      @media (min-width: 992px) { @content; }
+    }
+   
+    @else if $class == lg {
+      @media (min-width: 1200px) { @content; }
+    }
+   
+    @else {
+      @warn "Breakpoint mixin supports: xs, sm, md, lg";
+    }
+  }
+  
+  /// Helper mixin to create keyframes for animations.
+  ///
+  /// @group Animations/Transitions
+  /// @author Robin Heij
+  ///
+  /// @param {String} $animation-name - The name of the animation you want to make
+  /// @output `@keyframes` 
+  ///
+  /// @example scss - Create the keyframes for animation 'slide-down'.
+  ///     @include keyframes(slide-down) {
+  ///       0% { opacity: 1; }
+  ///       100% { opacity: 0; }
+  ///     }
+  
+  @mixin keyframes($animation-name) {
+      @-webkit-keyframes #{$animation-name} {
+          @content;
+      }
+      @-moz-keyframes #{$animation-name} {
+          @content;
+      }  
+      @-ms-keyframes #{$animation-name} {
+          @content;
+      }
+      @-o-keyframes #{$animation-name} {
+          @content;
+      }  
+      @keyframes #{$animation-name} {
+          @content;
+      }
+  }
+  
+  /// Helper mixin to add an animation.
+  ///
+  /// @group Animations/Transitions
+  /// @author Robin Heij
+  ///
+  /// @param {String} $str - The name of the animation you want to inlude here + options
+  /// @output `animation` 
+  ///
+  /// @require {mixin} keyframes
+  ///
+  /// @example scss - Include the animation 'slide-down' in `.foo`.
+  ///   .foo {
+  ///     @include animation('slide-down 5s 3');
+  ///   }
+  
+  @mixin animation($str) {
+    -webkit-animation: #{$str};
+    -moz-animation: #{$str};
+    -ms-animation: #{$str};
+    -o-animation: #{$str};
+    animation: #{$str};      
+  }
+  
+  
+  /// Helper mixin to add a transition.
+  ///
+  /// @group Animations/Transitions
+  /// @author Robin Heij
+  ///
+  /// @param {String} $args... - The transition parameters
+  /// @output `transition` 
+  ///
+  /// @example scss - Include a transition for color on `.foo`.
+  ///   .foo {
+  ///     @include transition(color .3s ease);
+  ///   }
+  
+  @mixin transition($args...) {
+    -webkit-transition: $args;
+    -moz-transition: $args;
+    -ms-transition: $args;
+    -o-transition: $args;
+    transition: $args;
+  }
+  
+  
+  /// Helper mixin to have cross-broswer opacity.
+  ///
+  /// @author Robin Heij
+  ///
+  /// @param {String} $opacity - The opacity in a range of 0 - 1
+  /// @output `opacity` and `filter` 
+  ///
+  /// @example scss - Lower the opacity of `.foo` to 80%.
+  ///   .foo {
+  ///     @include opacity(0.8);
+  ///   }
+  
+  @mixin opacity($opacity) {
+    opacity: $opacity;
+    $opacity-ie: $opacity * 100;
+    filter: alpha(opacity=$opacity-ie); //IE8
+  }
+  
+  
+  /// Extension for a clearfix.
+  ///
+  /// @author Robin Heij
+  ///
+  /// @example scss - Let `.foo` be a clearfix.
+  ///   .foo {
+  ///     @extend %clearfix;
+  ///   }
+  
+  %clearfix {
+    *zoom: 1;
+    &:before, &:after {
+      content: " ";
+      display: table;
+    }
+    &:after {
+      clear: both;
+    }
+  }
+  
+  
+  /// Extension for visually hiding an element. This way that element can be animated or transitioned (where display:none can't).
+  ///
+  /// @author Robin Heij
+  ///
+  /// @example scss - Let `.foo` be visually hidden.
+  ///   .foo {
+  ///     @extend %visuallyhidden;
+  ///   }
+  
+  %visuallyhidden {
+    margin: -1px;
+    padding: 0;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    clip: rect(0, 0, 0, 0);
+    position: absolute;
+  }
+  
+  
+  /// Helper mixin for the pseudo-element
+  ///
+  /// @group Pseudo
+  /// @author Robin Heij
+  ///
+  /// @param {string} $display [block] - The value of the attribute 'display' 
+  /// @param {string} $pos [absolute] - The value of the attribute 'position' 
+  /// @param {string} $content [''] - The value of the attribute 'content' 
+  /// @output `content`, `display` and `position`
+  ///
+  /// @example scss - Extend the :after pseudo-element of `.foo` with the required attributes.
+  ///   .foo {
+  ///     &:after{
+  ///       @include pseudo;
+  ///     }
+  ///   }
+  ///
+  /// @example scss - Extend the :after pseudo-element of `.foo` with the required attributes.
+  ///   .foo {
+  ///     &:after{
+  ///       @include pseudo('inline-block', 'relative', 'Text inside the :after pseudo element');
+  ///     }
+  ///   }
+  
+  @mixin pseudo($display: block, $pos: absolute, $content: ''){
+      content: $content;
+      display: $display;
+      position: $pos;
+  }
+  
+  /// Helper mixin for when an element needs to respect a certain ratio, like a video.
+  ///
+  /// @author Robin Heij
+  ///
+  /// @param {integer} $x - The width-factor in a ratio formula
+  /// @param {integer} $y - The height-factor in a ratio formula
+  /// @param {boolean} $pseudo [false] - Whether or not the element that is being made should be a pseudo-element 
+  /// @output {`padding-top` | `psuedo element`}
+  ///
+  /// @example scss - Make sure `.foo` is having a 16:9-ratio.
+  ///   .foo {
+  ///     @include responsive-ratio(16,9);
+  ///   }
+  
+  @mixin responsive-ratio($x,$y, $pseudo: false) {
+      $padding: unquote( ( $y / $x ) * 100 + '%' );
+      @if $pseudo {
+          &:before {
+              @include pseudo($pos: relative);
+              width: 100%;
+              padding-top: $padding;
+          }
+      } @else {
+          padding-top: $padding;
+      }
+  }
+  
+  /// Helper mixin for triangles in css, as a pseudo-element (More like an arrow).
+  ///
+  /// @author Robin Heij
+  ///
+  /// @param {string} $color - The color of the triangle
+  /// @param {string} $direction - The direction of the triangle (down, up, right, left)
+  /// @param {pixels} $size [6px] - The size of the triangle
+  /// @param {string} $pos [absolute] - The value of the attribute 'position' 
+  /// @param {boolean} $round [false] - If the triangle should have a border-radius of 3px
+  /// @output `psuedo element`
+  ///
+  /// @require {mixin} pseudo
+  ///
+  /// @example scss - Make sure `.foo` is having a 16:9-ratio.
+  ///   .foo {
+  ///     @include css-triangle(#fff, down, 6px, absolute, true);
+  ///   }
+  
+  @mixin css-triangle($color, $direction, $size: 6px, $position: absolute, $round: false){
+      @include pseudo($pos: $position);
+      width: 0;
+      height: 0;
+      @if $round {
+          border-radius: 3px;
+      }
+      @if $direction == down {
+          border-left: $size solid transparent;
+          border-right: $size solid transparent;
+          border-top: $size solid $color;
+          margin-top: 0 - round( $size / 2.5 );
+      } @else if $direction == up {
+          border-left: $size solid transparent;
+          border-right: $size solid transparent;
+          border-bottom: $size solid $color;
+          margin-bottom: 0 - round( $size / 2.5 );
+      } @else if $direction == right {
+          border-top: $size solid transparent;
+          border-bottom: $size solid transparent;
+          border-left: $size solid $color;
+          margin-right: -$size;
+      } @else if  $direction == left {
+          border-top: $size solid transparent;
+          border-bottom: $size solid transparent;
+          border-right: $size solid $color;
+          margin-left: -$size;
+      }
+  }
+  
+  
+  /// Helper mixin for defining z-indexes, but then with aliases for the index levels.
+  ///
+  /// @author Robin Heij
+  ///
+  /// @param {string} $name - The name of the layer
+  /// @return {`integer` | `null` }
+  ///
+  /// @require {variable} z-indexes
+  ///
+  /// @example scss - Make sure `.foo` is on top of the normal z-index layer, but below the modal nd outdated-browser z-index.
+  ///   .foo {
+  ///     @include z('site-header');
+  ///   }
+  
+  @function z($name) {
+      @if index($z-indexes, $name) {
+          @return (length($z-indexes) - index($z-indexes, $name)) + 1;
+      } @else {
+          @warn 'There is no item "#{$name}" in this list; choose one of: #{$z-indexes}';
+          @return null;
+      }
+  }
+  
+  /// Variable for z-indexes.
+  ///
+  /// @author Robin Heij
+  ///
+  
+  $z-indexes: (
+      "outdated-browser",
+      "modal",
+      "site-header",
+      "page-wrapper",
+      "site-footer"
+  );
+  
+  
+  /// Helper mixin for adding marges on both ends of an element.
+  ///
+  /// @group Margins/paddings
+  /// @author Robin Heij
+  ///
+  /// @param {unit} $spacing - The amount of margin
+  /// @output `margin`
+  ///
+  /// @example scss - Give the ends of `.foo` margin.
+  ///   .foo {
+  ///     @include push-ends(20px);
+  ///   }
+  
+  @mixin push-ends($spacing) { margin: { top: $spacing; bottom: $spacing; } }
+  
+  /// Helper mixin for adding marges on both sides of an element.
+  ///
+  /// @group Margins/paddings
+  /// @author Robin Heij
+  ///
+  /// @param {unit} $spacing - The amount of margin
+  /// @output `margin`
+  ///
+  /// @example scss - Give the sides of `.foo` margin.
+  ///   .foo {
+  ///     @include push-sides(20px);
+  ///   }
+  
+  @mixin push-sides($spacing) { margin: { left: $spacing; right: $spacing; } }
+  
+  /// Helper mixin for aligning an element in center.
+  ///
+  /// @group Margins/paddings
+  /// @author Robin Heij
+  ///
+  /// @output `margin`
+  ///
+  /// @example scss - Give the sides of `.foo` margin.
+  ///   .foo {
+  ///     @include push-auto;
+  ///   }
+  
+  @mixin push-auto { margin: { left: auto; right: auto; } }
+  
+  /// Helper mixin for offsetting marges on both sides of an element.
+  ///
+  /// @group Margins/paddings
+  /// @author Robin Heij
+  ///
+  /// @param {unit} $spacing - The amount of margin
+  /// @output `margin`
+  ///
+  /// @example scss - Give the sides of `.foo` margin.
+  ///   .foo {
+  ///     @include offset-sides(20px);
+  ///   }
+  @mixin offset-sides($spacing) { margin: { left: -$spacing; right: -$spacing; } }
+  
+  /// Helper mixin for removing margins on the ends of an element.
+  ///
+  /// @group Margins/paddings
+  /// @author Robin Heij
+  ///
+  /// @output `margin`
+  ///
+  /// @example scss - Flush the ends of `.foo` margin.
+  ///   .foo {
+  ///     @include flush-ends;
+  ///   }
+  
+  @mixin flush-ends { margin: { top: 0; bottom: 0; } }
+  
+  /// Helper mixin for removing margins on the sides of an element.
+  ///
+  /// @group Margins/paddings
+  /// @author Robin Heij
+  ///
+  /// @output `margin`
+  ///
+  /// @example scss - Flush the sides of `.foo` margin.
+  ///   .foo {
+  ///     @include flush-ends;
+  ///   }
+  
+  @mixin flush-sides { margin: { left: 0; right: 0; } }
+  
+  /// Helper mixin for adding paddings on the ends of an element.
+  ///
+  /// @group Margins/paddings
+  /// @author Robin Heij
+  ///
+  /// @param {unit} $spacing - The amount of padding
+  /// @output `padding`
+  ///
+  /// @example scss - Add paddings to the ends of `.foo` margin.
+  ///   .foo {
+  ///     @include soft-ends(20px);
+  ///   }
+  
+  @mixin soft-ends($spacing) { padding: { top: $spacing; bottom: $spacing; } }
+  
+  /// Helper mixin for adding paddings on the sides of an element.
+  ///
+  /// @group Margins/paddings
+  /// @author Robin Heij
+  ///
+  /// @param {unit} $spacing - The amount of padding
+  /// @output `padding`
+  ///
+  /// @example scss - Add paddings to the sides of `.foo` margin.
+  ///   .foo {
+  ///     @include soft-sides(20px);
+  ///   }
+  
+  @mixin soft-sides($spacing) { padding: { left: $spacing; right: $spacing; } }
+  
+  /// Helper mixin for removing padding on the ends of an element.
+  ///
+  /// @group Margins/paddings
+  /// @author Robin Heij
+  ///
+  /// @output `padding`
+  ///
+  /// @example scss - Flush the ends of `.foo` padding.
+  ///   .foo {
+  ///     @include hard-ends;
+  ///   }
+  
+  @mixin hard-ends { padding: { top: 0; bottom: 0; } }
+  
+  /// Helper mixin for removing padding on the sides of an element.
+  ///
+  /// @group Margins/paddings
+  /// @author Robin Heij
+  ///
+  /// @output `padding`
+  ///
+  /// @example scss - Flush the sides of `.foo` padding.
+  ///   .foo {
+  ///     @include hard-sides;
+  ///   }
+  
+  @mixin hard-sides { padding: { left: 0; right: 0; } }
+  
+  
+  /// Helper mixin for hiding from both screenreaders and browsers.
+  ///
+  /// @author Robin Heij
+  ///
+  /// @output `display` and `visibility`
+  ///
+  /// @example scss - Hide `.foo`.
+  ///   .foo {
+  ///     @include hidden;
+  ///   }
+  
+  @mixin hidden {
+    display: none;
+    visibility: hidden;
+  }
+  
+  /// Helper mixin for showing in both screenreaders and browsers.
+  ///
+  /// @author Robin Heij
+  ///
+  /// @param {string} $state [block] - Display attribute value
+  /// @output `display` and `visibility`
+  ///
+  /// @example scss - Show `.foo`.
+  ///   .foo {
+  ///     @include visible('block');
+  ///   }
+  
+  @mixin visible($state: 'block') {
+    display: unquote($state);
+    visibility: visible;
+  }
+  
+  /// Helper mixin for styling a placeholder.
+  ///
+  /// @author Robin Heij
+  /// @group input
+  ///
+  /// @example scss - Customize the placeholder globally in your project
+  ///   body {
+  ///     @include input-placeholder { color: $grey; };
+  ///   }
+  
+  @mixin input-placeholder {
+    &.placeholder { @content; }
+    &:-moz-placeholder { @content; }
+    &::-moz-placeholder { @content; }
+    &:-ms-input-placeholder { @content; }
+    &::-webkit-input-placeholder { @content; }
+  }
+  
+  
+  /// Helper mixin for adding retina content to a selector.
+  ///
+  /// @author Robin Heij
+  ///
+  /// @example scss - Add a retina background image to `.foo`.
+  ///   .foo {
+  ///     @include retina { background-image: url(../img/background@2x.png); };
+  ///   }
+  
+  @mixin retina {
+    @media only screen and (-webkit-min-device-pixel-ratio: 1.5),
+    only screen and (-moz-min-device-pixel-ratio: 1.5),
+    only screen and (-o-min-device-pixel-ratio: 3 / 2),
+    only screen and (min-device-pixel-ratio: 1.5),
+    only screen and (min-resolution: 1.5dppx) {
+      @content;
+    }
+  }
+  
+  
+  /// Helper mixin for removing margin on the ends of the first, and optionally the last, child-element.
+  ///
+  /// @author Robin Heij
+  ///
+  /// @example scss - Add a retina background image to `.foo`.
+  ///   .foo {
+  ///     @include content-margins('false');
+  ///   }
+  
+  @mixin content-margins($selector: '> *', $last-child: false) {
+    @if not $selector {
+      $selector: '&';
+    }
+  
+    #{unquote($selector)} {
+      &:first-child { margin-top: 0; }
+      @if $last-child {
+        &:last-child { margin-bottom: 0; }
+      }
+    }
+  }
+  
+  
+  /// Helper mixin for aligning.
+  ///
+  /// @author Robin Heij
+  ///
+  /// @param {boolean} $vertical [true] - Should it be vertically aligned?
+  /// @param {boolean} $horizontal [false] - Should it be horizontally aligned?
+  /// @param {value} $position [relative] - The value of the position attribute
+  /// @output `position`, `top`, `transform`, `left` 
+  ///
+  /// @example scss - Align `.foo` vertically and horizontally
+  ///   .foo {
+  ///     @include align(true,true);
+  ///   }
+  
+  @mixin align($vertical: true, $horizontal: false, $position: relative) {
+    @if $position {
+      position: $position;
+    }
+    @if $vertical {
+      top: 50%;
+    }
+    @if $horizontal {
+      left: 50%;
+    }
+  
+    @if $vertical and $horizontal {
+      transform: translateX(-50%) translateY(-50%);
+    } @else if $vertical {
+      transform: translateY(-50%);
+    } @else {
+      transform: translateX(-50%);
+    }
+  }
+  
+  
+  /// Helper mixin for antialiasing.
+  ///
+  /// @author Robin Heij
+  ///
+  /// @example scss - Antialias all
+  ///   body {
+  ///     @include antialias;
+  ///   }
+  
+  @mixin antialias {
+    font-smoothing: antialiased;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+  
+  
+  /// Helper mixin for changing the attribute `appearance`.
+  ///
+  /// @author Robin Heij
+  /// @group input
+  ///
+  /// @example scss - Change the appearance of an inputfield
+  ///   input {
+  ///     @include appearance(textfield);
+  ///   }
+  
+  @mixin appearance($val: none) {
+    -webkit-appearance: $val;
+    -moz-appearance: $val;
+    appearance: $val;
+  }
+  
+  
+  /// Helper mixin for changing the selection style.
+  ///
+  /// @author Robin Heij
+  ///
+  /// @example scss - Change the style of the selections
+  ///   body {
+  ///     @include selection { background-color: red; };
+  ///   }
+  
+  @mixin selection {
+    ::-moz-selection { @content; }
+    ::selection { @content; }
+  }
+  
+  /// Helper mixin for truncating text.
+  ///
+  /// @author Robin Heij
+  /// @group text
+  ///
+  /// @example scss - Truncate text of the paragraphes
+  ///   p {
+  ///     @include truncate(200px);
+  ///   }
+  
+  @mixin truncate($truncation-boundary) {
+    max-width: $truncation-boundary;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  
+  
+  /// Helper mixin for unlisting lists.
+  ///
+  /// @author Robin Heij
+  /// @group text
+  ///
+  /// @require {mixin} flush-ends
+  /// @require {mixin} flush-sides
+  ///
+  /// @example scss - unlist ul and flush the vertical margin and padding
+  ///   ul {
+  ///     @include unlist('vertical', true);
+  ///   }
+  
+  @mixin unlist($margin: true, $padding: true) {
+    @if $margin {
+      @if $margin == 'vertical' {
+        @include flush-ends;
+      } @elseif $margin == 'horizontal' {
+        @include flush-sides;
+      } @else {
+        margin: 0;
+      }
+    }
+    @if $padding {
+      padding: 0;
+    }
+    list-style: none;
+  }

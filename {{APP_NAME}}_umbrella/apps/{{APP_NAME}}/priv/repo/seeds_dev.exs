@@ -1,0 +1,11 @@
+# Script for populating the database. You can run it as:
+#
+#     mix run priv/repo/seeds_dev.exs
+#
+# Inside the script, you can read and write to any of your
+# repositories directly:
+#
+#     {{MODULE_NAME}}.Repo.insert!(%{{MODULE_NAME}}.SomeSchema{})
+#
+# We recommend using the bang functions (`insert!`, `update!`
+# and so on) as they will fail if something goes wrong.

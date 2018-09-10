@@ -1,0 +1,17 @@
+FROM elixir:1.6.2
+LABEL maintainer "YipYip <devops@yipyip.nl>"
+
+ADD . /application
+WORKDIR /application/{{APP_NAME}}_umbrella
+
+RUN mix local.hex --force
+RUN mix local.rebar --force
+RUN mix clean
+
+RUN MIX_ENV=staging mix deps.compile
+RUN MIX_ENV=prod mix deps.compile
+
+RUN MIX_ENV=staging mix compile
+RUN MIX_ENV=prod mix compile
+
+CMD ["mix", "phx.server"]

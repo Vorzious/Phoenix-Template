@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Login | {{MODULE_NAME}} CMS</title>
+    <link rel="stylesheet" href="<%= static_path(@conn, "/cms/css/vendor.css") %>">
+    <link rel="stylesheet" href="<%= static_path(@conn, "/cms/css/app.css") %>">
+</head>
+<body class="gray-bg">
+    <div class="wrapper wrapper-content">
+        <p class="alert alert-info" role="alert"><%= get_flash(@conn, :info) %></p>
+        <p class="alert alert-danger" role="alert"><%= get_flash(@conn, :error) %></p>            
+    </div>
+
+    <div class="middle-box text-center loginscreen">
+        <div>
+            <div>
+                <div class="image-container">
+                    <img alt="Image CMS" src=""/>
+                </div>
+                <p>Login with your {{MODULE_NAME}} Administrator account</p>
+            </div>
+            <main role="main">
+                <%= render @view_module, @view_template, assigns %>
+            </main>
+        </div>
+    </div>
+    <script src = "<%= static_path(@conn, "/cms/js/app.js") %>"></script>
+</body>
+</html>

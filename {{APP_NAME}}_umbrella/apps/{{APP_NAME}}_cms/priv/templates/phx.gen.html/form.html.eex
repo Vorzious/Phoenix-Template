@@ -1,0 +1,47 @@
+<%%= form_for @changeset, @action, fn f -> %>
+
+  <div class="gridbox-title">
+    <h3><%%= {{MODULE_NAME}}Cms.LayoutView.get_form_title(@conn) %> <%= schema.route_helper %></h3>
+
+    <!-- Menu Buttons -->
+    <div class="gridbox-tools">
+      <%%= link "Cancel", class: "btn btn-white", to: <%= schema.route_helper %>_path(@conn, :index) %>
+      <%%= submit "Save", class: "btn btn-primary" %>
+    </div>
+  </div>
+
+  <div class="gridbox-content">
+    <%%= if @changeset.action do %>
+        <div class="alert alert-danger alert-dismissable">
+        <button aria-hidden="true" data-dismiss="alert" class="close" type="button">×</button>
+        <p>
+          Oops, something went wrong! Please check the errors below.
+        </p>
+      </div>
+    <%% end %>
+
+    <%= for {label, input, error} <- inputs, input do %>
+      <div class="form-group row">
+        <div class="col-2">
+          <%= label %>
+        </div>
+        <div class="col-10">
+          <%= input %>
+          <%= error %>
+        </div>
+      </div>
+      <div class="hr-line-dashed"></div>
+    <% end %>
+
+  </div> <!-- gridbox-content -->
+
+  <div class="gridbox-footer">
+
+    <!-- Menu Buttons -->
+    <div class="gridbox-tools">
+      <%%= link "Cancel", class: "btn btn-white", to: <%= schema.route_helper %>_path(@conn, :index) %>
+      <%%= submit "Save", class: "btn btn-primary" %>
+    </div>
+  </div>
+
+<%% end %>

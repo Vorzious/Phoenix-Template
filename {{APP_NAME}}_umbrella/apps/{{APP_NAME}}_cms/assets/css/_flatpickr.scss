@@ -1,0 +1,27 @@
+.flatpickr-day.today{
+	border-color: $navy;
+
+	&:hover{
+		background: $lazur;
+	}
+}
+
+.flatpickr-day.selected{
+	background: $navy;
+	border: none;
+
+	&:hover{
+		background: $lazur;
+	}
+}
+
+.flatpickr-day{
+	&:hover{
+		background: $lazur;
+		color: white;
+	}
+}
+
+.flatpickr-month{
+	color: $navy;
+}

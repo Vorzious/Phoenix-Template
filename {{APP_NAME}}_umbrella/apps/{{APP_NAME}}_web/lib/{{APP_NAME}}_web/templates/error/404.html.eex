@@ -1,0 +1,7 @@
+<div class="jumbotron">
+  <h1>404</h1>
+  <p class="lead">Page Not Found</p>
+    <%= link to: page_path(@conn, :index) do %>
+        <button class="btn btn-primary">Home</button>
+    <% end %>  
+</div>

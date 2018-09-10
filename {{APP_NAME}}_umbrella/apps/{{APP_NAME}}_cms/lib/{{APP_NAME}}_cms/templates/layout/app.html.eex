@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>{{MODULE_NAME}} | CMS</title>
+
+    <link rel="stylesheet" href="<%= static_path(@conn, "/cms/css/vendor.css") %>">
+    <link rel="stylesheet" href="<%= static_path(@conn, "/cms/css/app.css") %>">
+  </head>
+
+  <body class="pace-done">
+    <div id="wrapper">
+
+      <!-- SIDE BAR -->
+      <nav class="navbar-default navbar-static-side" role="navigation">
+        <div class="sidebar-collapse">
+          <ul class="nav metismenu" id="side-menu">
+            <li class="nav-header">
+                <div class="dropdown profile-element">
+                  <div id="logo"></div>
+                  <%= link "{{MODULE_NAME}}", to: page_path(@conn, :index), class: "navbar-brand" %>
+                </div>
+            </li>
+
+            <!-- Home -->
+            <li class='<%= navigation_active_parent_checker(@conn.path_info, page_path(@conn, :index)) %>'>
+              <%= link to: page_path(@conn, :index) do %>
+                  <i class="fas fa-home"></i>
+                  <span class="nav-label">Home</span>
+              <% end %>
+            </li>
+
+            <!-- EXAMPLE FOR NEW MENU ITEM -->
+            <!-- Add Eex Syntax -->
+            <!-- <li class='navigation_active_parent_checker(conn path, resource_path)'>
+              link to: resource_path(conn, function)
+                <i class="font awesome icon"></i>
+                <span class="nav-label">Namespace</span>
+
+              <ul class="nav nav-second-level collapse in">
+                <li class='navigation_active_checker(conn path, resource_path)'>
+                  <i class="font awesome icon"></i>
+                    link to: resource_path(conn, function)
+                    Namespace
+                </li>
+                <li class='navigation_active_checker(conn path, resource_path)'>
+                  <i class="font awesome icon"></i>
+                    link to: resource_path(conn, function)
+                    Namespace
+                </li>
+              </ul>
+            </li> -->
+
+          </ul>
+        </div>
+      </nav>
+
+      <!-- PAGE WRAPPER -->
+      <div id="page-wrapper" class="gray-bg" style="min-height: 1295px;">
+
+        <!-- TOP BAR -->
+        <div class="row border-bottom">
+          <nav class="navbar navbar-static-top" role="navigation" style="margin-bottom: 0">
+            <div class="navbar-header d-block d-md-none">
+              <a class="navbar-minimalize btn btn-primary " href="#">
+                <i class="fas fa-bars"></i>
+              </a>
+            </div>
+            <ul class="nav navbar-right text-right">
+              <li>
+                <a href="login.html">
+                  <i class="fas fa-sign-out-alt"></i> Log out
+                </a>
+              </li>
+            </ul>
+          </nav>
+        </div>
+
+        <!-- BREADCRUMB -->
+        <div class="row wrapper page-heading">
+          <div class="col-lg-12">
+            <h2><%= String.capitalize(get_page_title(@conn)) %></h2>
+            <ol class="breadcrumb">
+              <%= raw(format_breadcrumb(get_current_path(@conn))) %>
+            </ol>
+          </div>
+        </div>
+
+        <!-- CONTENT -->
+        <div class="wrapper wrapper-content">
+          <div class="container">
+            <p class="alert alert-info" role="alert"><%= get_flash(@conn, :info) %></p>
+            <p class="alert alert-danger" role="alert"><%= get_flash(@conn, :error) %></p>
+
+            <main role="main">
+              <%= render @view_module, @view_template, assigns %>
+            </main>
+
+            <div class="footer">
+              <div>
+                &copy; Copyright 2018 YipYip - All rights reserved
+                <span class="right"><%= {{MODULE_NAME}}.Mixfile.project[:version] %></span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <script src="<%= static_path(@conn, "/cms/js/app.js") %>"></script>
+  </body>
+</html>

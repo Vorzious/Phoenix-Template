@@ -1,0 +1,33 @@
+<div class="row">
+    <div class="col-lg-12">
+        <div class="gridbox float-e-margins">
+            <div class="gridbox-title">
+                <h3>Show <%= schema.human_singular %></h3>
+                <div class="gridbox-tools">
+                    <%%= link "Edit", to: <%= schema.route_helper %>_path(@conn, :edit, @<%= schema.singular %>) %>
+                    <%%= link "Back", to: <%= schema.route_helper %>_path(@conn, :index) %>
+                </div>
+            </div>
+            <div class="gridbox-content">
+                <table cellpadding="10">
+                    <%= for {k, _} <- schema.attrs do %>
+                        <tr>
+                            <td>
+                                <strong><%= Phoenix.Naming.humanize(Atom.to_string(k)) %>:</strong>
+                            </td>
+                            <td>
+                                <%%= @<%= schema.singular %>.<%= k %> %>
+                            </td>
+                        </tr>
+                    <% end %>
+                </table>
+            </div>
+            <div class="gridbox-footer">
+                <div class="gridbox-tools">
+                    <%%= link "Edit", to: <%= schema.route_helper %>_path(@conn, :edit, @<%= schema.singular %>) %>
+                    <%%= link "Back", to: <%= schema.route_helper %>_path(@conn, :index) %>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

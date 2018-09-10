@@ -1,0 +1,35 @@
+## `msgid`s in this file come from POT (.pot) files.
+##
+## Do not add, change, or remove `msgid`s manually here as
+## they're tied to the ones in the corresponding POT file
+## (with the same domain).
+##
+## Use `mix gettext.extract --merge` or `mix gettext.merge`
+## to merge POT files into PO files.
+msgid ""
+msgstr ""
+"Language: nl_NL\n"
+
+msgid "Back"
+msgstr "Terug"
+
+msgid "Create"
+msgstr "Creër"
+
+msgid "Show"
+msgstr "Toon"
+
+msgid "Delete"
+msgstr  "Verwijder"
+
+msgid "Edit"
+msgstr "Bewerk"
+
+msgid "Cancel"
+msgstr "Annuleer"
+
+msgid "Save"
+msgstr "Opslaan"
+
+msgid "DefaultError"
+msgstr "Oeps! Iets is misgegaan. Controleer de onderstaande fouten."

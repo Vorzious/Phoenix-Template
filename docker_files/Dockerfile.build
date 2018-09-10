@@ -1,0 +1,37 @@
+FROM weareyipyip/elixir-sass:1.6.2
+LABEL maintainer "YipYip <devops@yipyip.nl>"
+
+ARG MIX_ENV
+
+ADD . /application
+WORKDIR /application/{{APP_NAME}}_umbrella
+
+RUN mix local.hex --force
+RUN mix local.rebar --force
+
+RUN mix clean
+
+RUN mix deps.unlock --all
+RUN mix deps.clean --all
+RUN mix deps.get
+
+RUN cd apps/{{APP_NAME}}_cms/assets \
+  && npm install \
+  && brunch build --production \
+  && npm prune --production
+
+RUN cd apps/{{APP_NAME}}_web/assets \
+  && npm install \
+  && brunch build --production \
+  && npm prune --production
+
+RUN MIX_ENV=prod mix deps.compile
+RUN MIX_ENV=staging mix deps.compile
+
+RUN MIX_ENV=prod mix compile
+RUN MIX_ENV=staging mix compile
+
+RUN MIX_ENV=prod mix {{APP_NAME}}_endpoint.digest default
+RUN MIX_ENV=staging mix {{APP_NAME}}_endpoint.digest default
+
+CMD MIX_ENV=$MIX_ENV mix phx.server

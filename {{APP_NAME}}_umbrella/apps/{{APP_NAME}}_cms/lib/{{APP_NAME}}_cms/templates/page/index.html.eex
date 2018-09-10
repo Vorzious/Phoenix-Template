@@ -1,0 +1,30 @@
+<div class="row">
+    <div class="col-xs-12 col-sm-4 col-sm-offset-4">
+        <div class="gridbox float-e-margins">
+            <div class="gridbox-content">
+                <h3 class="font-bold">Welcome, {{MODULE_NAME}} Admin</h3>
+                <div class="error-desc">
+                    <p>
+                        You have generated this website with YipYip Scaffold.
+                    </p>
+                    <p>
+                        This prototype is meant to speed up Phoenix umbrella setup.
+                    </p>
+                    <p>
+                        Thank you for using this template.
+                    </p>
+
+                    <hr>
+
+                    <p>YipYip</p>
+                    <p><a href="mailto:info@yipiyp.nl">info@yipyip.nl</a> </p>
+                    <p><a href="https://www.yipyip.nl">YipYip Website</a></p>
+                    <p><a href="https://www.github.com/weareyipyip/">YipYip GitHub</a></p>
+                    <p>Schiehavenkade 264, 3024EZ Rotterdam </p>
+                    <p>t: + 31 10 763 0763</p>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

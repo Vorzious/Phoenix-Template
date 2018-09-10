@@ -1,0 +1,152 @@
+.alert:empty { display: none; }
+
+.clear{
+	clear: both;
+}
+
+.right{
+	float: right;
+}
+
+.left{
+	float: left;
+}
+
+.menu-active{
+	span, i, svg{
+		color: $primary-color;
+	}
+}
+
+// FlatPickr
+.flatpickr-day.today{
+	border-color: $primary-color;
+
+	&:hover{
+		background: $info-color;
+	}
+}
+
+.flatpickr-day.selected{
+	background: $primary-color;
+	border: none;
+
+	&:hover{
+		background: $info-color;
+	}
+}
+
+.flatpickr-day{
+	&:hover{
+		background: $info-color;
+		color: white;
+	}
+}
+
+.flatpickr-month{
+	color: $primary-color;
+}
+
+table{
+	border-spacing: 10px;
+	border-collapse: unset;
+
+	&.dataTable{
+		border-spacing: 0px;
+		border-collapse: collapse;
+	}
+}
+
+.gridbox-title{
+    padding: 15px;
+
+	h5{
+		padding-top: 2px;
+	}
+}
+
+.gridbox-tools{
+
+	a{
+		margin-left: 10px;
+		margin-bottom: 0px;
+	}
+
+	.btn{
+		margin-left: 10px;
+		margin-bottom: 0px;
+	}
+}
+
+.gridbox-footer{
+    padding: 15px;
+}
+
+.normal-buttons{
+	h5{
+		padding-top: 10px;
+	}
+}
+
+.tabs-container{
+    margin-bottom: 25px;
+}
+
+.wrapper{
+  .container{
+    max-width: 100%;
+    width: 100%;
+    padding: 0;
+  }
+}
+
+.loginscreen{
+
+  h3{
+    text-align: left;
+    color: $default-color;
+    margin-bottom: 10px;
+  }
+
+  img{
+    padding-bottom: 20px;
+  }
+
+  .image-container{
+    + p{
+      padding-bottom: 30px;
+    }
+  }
+
+  .form-group{
+    margin-bottom: 10px;
+
+    &:first-of-type(){
+      margin-top: 5px;
+    }
+
+    &.login-btn{
+      padding: 20px;
+    }
+  }
+
+  button{
+    margin-top: 0px;
+    margin-bottom: 0px;
+    &.btn{
+      min-width: 0px;
+    }
+  }
+
+  .forgot-pass{
+    padding-top: 8px;
+  }
+
+  a{
+    color: $primary-color;
+
+    &:hover{
+      text-decoration: underline;
+    }
+  }
+}

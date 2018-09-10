@@ -1,0 +1,18 @@
+<div class="row">
+    <div class="col-xs-12 col-sm-4 offset-sm-4">
+        <div class="gridbox float-e-margins">
+            <div class="gridbox-content">
+				<h3>404</h3>
+				<h4 class="font-bold">Page Not Found</h4>
+				<div class="error-desc">
+				    <p>Sorry, but the page you are looking for has not been found.</p>
+				    <div class="clear"></div>
+				    
+				    <%= link to: page_path(@conn, :index) do %>
+				        <button class="btn btn-primary">Home</button>
+				    <% end %>
+				</div>
+            </div>
+        </div>
+    </div>
+</div>

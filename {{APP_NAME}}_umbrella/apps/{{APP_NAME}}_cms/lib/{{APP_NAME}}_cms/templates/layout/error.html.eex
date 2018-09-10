@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>{{MODULE_NAME}}Cms | Error</title>
+
+    <link rel="stylesheet" href="<%= static_path(@conn, "/cms/css/vendor.css") %>">
+    <link rel="stylesheet" href="<%= static_path(@conn, "/cms/css/app.css") %>">
+</head>
+<body class="gray-bg">
+    <div class="middle-box text-center errorscreen">
+        <main role="main">
+            <%= render @view_module, @view_template, assigns %>
+        </main>
+    </div>
+
+    <script src = "<%= static_path(@conn, "/cms/js/app.js") %>"></script>
+</body>
+</html>
